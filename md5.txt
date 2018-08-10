@@ -1,0 +1,18 @@
+1.方法很多，其实有一个挺简单的方法，不需要另外安装什么软件。使用windows自带的命令即可：certutil -hashfile [文件路径] MD5
+2. echo -n "abc" | md5sum
+   -n 表示不加换行
+
+3.linux下生产md5
+md5sum filetohashA.txt filetohashB.txt filetohashC.txt > hash.md5
+三个文件的md5都写进了hash.md5文件   
+
+
+3.
+
+cdn部门的人说：提供各个idc的cdn的ip给我们是很困难的，所以不太可能提供ip给我们，那么我们是不是可以通过其他主机的vip来访问？。
+下载storage、cdn的文件，然后计算出给各自的md5,看md5是否匹配，如果不匹配就说明有问题。
+
+
+4.send_notice_ 调度是否切换成jp服务器
+jp 10598 23mins
+kr 43839 11mins

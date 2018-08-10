@@ -1,0 +1,43 @@
+一、DNS域名解析
+1.
+windows的hosts:
+ c:\***\etc\hosts
+linux的hosts：
+  /etc/named.conf
+
+2.
+windows通过ipconfig来查看dns
+linux通过/etc/resolv.conf查看dns
+
+3.
+window和linux都可以使用nslookup查看域名解析
+linux还可以使用dig来查看域名解析， dig + 域名 +trace 可以跟踪解析过程
+
+4.清理dns缓存的命令：
+ windows：ipconfig /flushdns
+ linux: sudo /etc/init.d/nscd restart
+ jvm清理dns缓存比较特殊: 
+ 	jvm也会缓存dns的解析结果，这个缓存是在InetAddress类中完成的，而这个缓存时间比较特殊，它有两种缓存策略：正确以及失败的解析结果
+缓存。这两个缓存时间又两个配置控制，在/lib/security/java.security配置文件中配置的，两个配置项分别是networkaddress.cache.ttl和networkaddress.cache.negative.ttl,
+它们的默认值是-1（永不失效）和10（缓存10秒）。
+	要修改这两个值同样有几种方式，分别是：a.直接修改java.security,b.java启动增加参数-Dsun.net.inetaddr.ttl=xxx,c.通过InetAddress类动态修改。
+	需要使用InetAddress类解析域名时，一定要单例模式，不然会有严重的性能问题，如果每次创建InetAddress实例，每次都要进行一次完整的域名解析，非常耗时。
+
+二、Java I/O的工作机制
+1.I/O接口
+基于字节：InputStream和OutputStream 数据格式
+基于字符：Writer和Reader 数据格式
+基于磁盘：File 传输数据方式
+基于网络：Socket 传输数据方式
+
+2.字节与字符的转换：
+InputStreamReader完成字节到字符的转换，需要加编码字符集；StreamDecoder完成字节到字符的解码的实现
+OutputStreamWriter完成字符到字节的编码过程，由StreamEncoder完成giv编码过程
+
+
+3.FileInputStream中有一个FileDescriptor对象，该对象的sync方法可以强制将操作系统缓存中的数据强制刷新到物理磁盘。
+
+three-way handshake
+正恩伸出手说：你看，我手里没有武器。（SYN）
+朗普看了看说：嗯，确实没有。（ACK）于是也伸出手说：你看，我手里也没有武器。（SYN）
+正恩看了看说：嗯，看来你确实有诚意。（ACK）
